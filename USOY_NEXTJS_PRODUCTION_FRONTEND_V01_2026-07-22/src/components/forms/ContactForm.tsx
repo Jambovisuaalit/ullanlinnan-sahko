@@ -2,7 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { contactSchema, type ContactFields, validateFiles } from "@/lib/contact-schema";
+import { contactSchema, type ContactFields, type ContactFormInput, validateFiles } from "@/lib/contact-schema";
 
 const labels: Record<ContactFields["topic"], string> = {
   electrical: "Sähköasennus tai sähkövika",
@@ -18,7 +18,7 @@ export function ContactForm({ defaultTopic }: { defaultTopic?: ContactFields["to
   const [generalError, setGeneralError] = useState("");
   const [fileError, setFileError] = useState("");
   const summaryRef = useRef<HTMLDivElement>(null);
-  const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<ContactFields>({
+  const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<ContactFormInput, unknown, ContactFields>({
     resolver: zodResolver(contactSchema),
     defaultValues: { topic: defaultTopic, phone: "", address: "", website: "", startedAt, consent: false },
     mode: "onBlur"
