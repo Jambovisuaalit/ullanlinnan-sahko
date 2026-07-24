@@ -11,7 +11,8 @@ export const contactSchema = z.object({
   website: z.string().max(0).optional(),
   startedAt: z.coerce.number().int().positive()
 });
-export type ContactFields = z.infer<typeof contactSchema>;
+export type ContactFormInput = z.input<typeof contactSchema>;
+export type ContactFields = z.output<typeof contactSchema>;
 export const allowedFileTypes = ["image/jpeg", "image/png", "image/webp", "application/pdf"] as const;
 export const maxFileSize = 5 * 1024 * 1024;
 export const maxFileCount = 3;
