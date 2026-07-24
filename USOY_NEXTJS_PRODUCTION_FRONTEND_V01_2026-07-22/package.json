@@ -3,17 +3,18 @@
   "version": "1.0.0",
   "private": true,
   "engines": {
-    "node": ">=20.9.0"
+    "node": "22.x"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "npm run materialize:brand-assets && next dev",
+    "materialize:brand-assets": "node scripts/materialize-brand-assets.mjs",
     "verify:assets": "node scripts/verify-assets.mjs",
     "validate:content": "node scripts/validate-content.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --max-warnings=0",
-    "build": "npm run verify:environment && npm run verify:assets && npm run validate:content && npm run validate:frontend && next build",
-    "build:ci": "ALLOW_MISSING_BRAND_ASSETS=true npm run verify:assets && npm run validate:content && npm run validate:frontend && next build",
-    "check": "npm run validate:content && npm run validate:frontend && npm run typecheck && npm run lint",
+    "build": "npm run materialize:brand-assets && npm run verify:environment && npm run verify:assets && npm run validate:content && npm run validate:frontend && next build",
+    "build:ci": "npm run materialize:brand-assets && npm run verify:assets && npm run validate:content && npm run validate:frontend && next build",
+    "check": "npm run materialize:brand-assets && npm run verify:assets && npm run validate:content && npm run validate:frontend && npm run typecheck && npm run lint",
     "validate:frontend": "node scripts/validate-frontend.mjs",
     "verify:environment": "node scripts/verify-environment.mjs"
   },

@@ -15,16 +15,58 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Install dependencies
-        run: npm install --no-fund --no-audit
-      - name: Validate and typecheck
-        run: npm run check
-      - name: Build preview
-        run: npm run build:ci
+
+      - name: Validate project
+        id: validate
         env:
           NEXT_PUBLIC_SITE_URL: https://preview.invalid
           CONTACT_FORM_WEBHOOK_URL: https://preview.invalid/contact
+        run: |
+          set +e
+
+          npm install --no-fund --no-audit > ci-install.log 2>&1
+          install_status=$?
+
+          if [ "$install_status" -eq 0 ]; then
+            npm run check > ci-check.log 2>&1
+            check_status=$?
+            npm run build:ci > ci-build.log 2>&1
+            build_status=$?
+          else
+            check_status=99
+            build_status=99
+            printf 'Skipped because dependency installation failed.\n' > ci-check.log
+            printf 'Skipped because dependency installation failed.\n' > ci-build.log
+          fi
+
+          printf 'install=%s\ncheck=%s\nbuild=%s\n' \
+            "$install_status" "$check_status" "$build_status" > ci-status.txt
+
+          echo "install_status=$install_status" >> "$GITHUB_OUTPUT"
+          echo "check_status=$check_status" >> "$GITHUB_OUTPUT"
+          echo "build_status=$build_status" >> "$GITHUB_OUTPUT"
+
+      - name: Upload CI diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-ci-diagnostics
+          path: |
+            USOY_NEXTJS_PRODUCTION_FRONTEND_V01_2026-07-22/ci-status.txt
+            USOY_NEXTJS_PRODUCTION_FRONTEND_V01_2026-07-22/ci-install.log
+            USOY_NEXTJS_PRODUCTION_FRONTEND_V01_2026-07-22/ci-check.log
+            USOY_NEXTJS_PRODUCTION_FRONTEND_V01_2026-07-22/ci-build.log
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Enforce validation result
+        if: always()
+        run: |
+          test "${{ steps.validate.outputs.install_status }}" = "0"
+          test "${{ steps.validate.outputs.check_status }}" = "0"
+          test "${{ steps.validate.outputs.build_status }}" = "0"

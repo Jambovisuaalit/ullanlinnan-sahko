@@ -1,0 +1,140 @@
+/* Ullanlinnan Sähkö Oy — approved brand finalization layer */
+:root {
+  --radius-xs: 0;
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 6px;
+  --shadow-subtle: 0 1px 0 rgb(26 26 26 / 8%);
+  --shadow-default: 0 12px 32px rgb(26 26 26 / 7%);
+  --shadow-elevated: 0 24px 64px rgb(26 26 26 / 11%);
+  --section-space: clamp(4.75rem, 7vw, 7.5rem);
+  --card-padding: clamp(1.35rem, 2.25vw, 2.25rem);
+  --text-h3: clamp(1.45rem, 1.25rem + 0.65vw, 1.95rem);
+  --text-h2: clamp(2.15rem, 1.55rem + 2vw, 3.65rem);
+  --text-h1: clamp(2.8rem, 1.8rem + 3.5vw, 5rem);
+}
+
+body {
+  background:
+    linear-gradient(90deg, transparent calc(100% - 1px), rgb(26 26 26 / 2%) 0) 0 0 / 8rem 100%,
+    var(--color-brand-paper);
+  letter-spacing: -0.005em;
+}
+
+h1, h2, h3, h4 { letter-spacing: -0.035em; }
+h1 { line-height: 1.02; }
+h2 { line-height: 1.07; }
+.section { position: relative; }
+.section--secondary { background: #f0ede7; border-block-color: rgb(26 26 26 / 12%); }
+.section--warm { background: #f7f3eb; }
+.section--black { background: #1a1a1a; }
+.section--olive { background: #4a554a; }
+.eyebrow { color: var(--color-brand-olive); letter-spacing: 0.16em; }
+.section--black .eyebrow, .section--olive .eyebrow, .contact-section .eyebrow, .site-footer .eyebrow { color: var(--color-brand-paper); }
+.eyebrow > span { width: 2.35rem; background: var(--color-brand-gold); }
+.section-heading { gap: var(--space-5); margin-bottom: clamp(2.5rem, 4vw, 4.5rem); }
+.section-heading h2 { max-width: 17ch; }
+.section-heading--center h2 { max-width: 19ch; }
+.hero-lead, .section-lead { line-height: 1.55; }
+
+.button {
+  min-height: 3.25rem;
+  padding: 0.9rem 1.35rem;
+  border-radius: 0;
+  font-size: 0.95rem;
+  letter-spacing: 0.005em;
+  transition: background-color var(--duration-default) var(--easing-standard), border-color var(--duration-default) var(--easing-standard), color var(--duration-default) var(--easing-standard), box-shadow var(--duration-default) var(--easing-standard);
+}
+.button:hover { translate: none; }
+.button--primary { border-color: var(--color-brand-black); }
+.button--primary:hover { background: #343434; box-shadow: inset 0 -3px var(--color-brand-gold); }
+.button--secondary { border-color: var(--color-border-strong); }
+.button--secondary:hover { background: rgb(26 26 26 / 5%); box-shadow: inset 0 -3px var(--color-brand-gold); }
+.button--inverse { border-color: var(--color-brand-paper); }
+.button--inverse:hover { background: #fff; box-shadow: inset 0 -3px var(--color-brand-gold); }
+.arrow-link { min-height: 2.75rem; width: fit-content; border-bottom: 1px solid currentColor; }
+.arrow-link:hover { text-decoration: none; border-bottom-color: var(--color-brand-gold); }
+
+.site-notice { background: var(--color-brand-black); border-bottom: 1px solid rgb(251 249 245 / 14%); color: var(--color-brand-paper); font-size: 0.8rem; letter-spacing: 0.01em; }
+.site-notice svg { color: var(--color-brand-gold); }
+.site-notice a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.site-header { border-bottom-color: rgb(26 26 26 / 18%); background: rgb(251 249 245 / 96%); box-shadow: 0 1px 0 rgb(26 26 26 / 4%); backdrop-filter: blur(16px); }
+.site-header__row { min-height: clamp(4.75rem, 7vw, 5.25rem); }
+.brand-logo { width: clamp(10.75rem, 18vw, 14.75rem); }
+.desktop-nav > a, .nav-dropdown > button { min-height: 3rem; font-size: 0.88rem; letter-spacing: 0.005em; }
+.desktop-nav > a:hover, .nav-dropdown > button:hover { box-shadow: inset 0 -2px var(--color-brand-gold); }
+.desktop-nav > a[aria-current="page"], .nav-dropdown > button[data-active="true"] { box-shadow: inset 0 -3px var(--color-brand-gold); }
+.nav-dropdown__panel { top: calc(100% + 0.75rem); padding: var(--space-4); border-radius: 0; border-top: 3px solid var(--color-brand-gold); background: var(--color-brand-paper); box-shadow: var(--shadow-elevated); }
+.nav-dropdown__panel a { min-height: 3.4rem; }
+.menu-trigger, .icon-button { border-radius: 0; border-color: var(--color-border-strong); }
+.mobile-drawer { border-left: 3px solid var(--color-brand-gold); background: var(--color-brand-paper); }
+.mobile-drawer nav a { min-height: 3.5rem; }
+.mobile-action-bar { box-shadow: 0 -1px 0 rgb(26 26 26 / 15%); }
+.mobile-action-bar a:last-child { background: var(--color-brand-paper); }
+.breadcrumbs { background: var(--color-brand-paper); border-bottom-color: rgb(26 26 26 / 12%); }
+
+.media-frame {
+  isolation: isolate;
+  border-radius: 0;
+  border-color: rgb(26 26 26 / 24%);
+  background: radial-gradient(circle at 78% 76%, rgb(212 163 89 / 30%), transparent 0 22%, transparent 23%), linear-gradient(135deg, #e4ddd2 0%, #f3eee6 58%, #c5b8a3 100%);
+}
+.media-frame::before { content: ""; position: absolute; inset: 0; z-index: -1; background-image: linear-gradient(rgb(74 85 74 / 12%) 1px, transparent 1px), linear-gradient(90deg, rgb(74 85 74 / 12%) 1px, transparent 1px); background-size: 3rem 3rem; }
+.media-frame--olive { background: radial-gradient(circle at 78% 76%, rgb(212 163 89 / 28%), transparent 0 22%, transparent 23%), var(--color-brand-olive); }
+.media-frame--dark { background: radial-gradient(circle at 78% 76%, rgb(212 163 89 / 25%), transparent 0 20%, transparent 21%), linear-gradient(135deg, #2d322d 0%, #171917 100%); }
+.media-requirement { align-content: end; padding: clamp(1.25rem, 3vw, 2rem); background: none; }
+.media-requirement::before { content: "KUVATARVE"; font-size: var(--text-xs); font-weight: 800; letter-spacing: 0.16em; color: var(--color-brand-olive); }
+.media-frame--dark .media-requirement::before, .media-frame--olive .media-requirement::before { color: var(--color-brand-gold); }
+.media-requirement > svg { display: none; }
+.media-requirement strong, .media-requirement span { width: fit-content; max-width: min(100%, 36ch); padding-inline: 0.75rem; background: var(--color-brand-paper); color: var(--color-brand-black); }
+.media-requirement strong { padding-top: 0.65rem; }
+.media-requirement span { padding-bottom: 0.65rem; }
+
+.service-card { min-height: 20rem; border-radius: 0; border-color: rgb(26 26 26 / 18%); border-top: 2px solid var(--color-brand-black); background: rgb(255 255 255 / 78%); box-shadow: none; transition: border-color var(--duration-default) var(--easing-standard), background-color var(--duration-default) var(--easing-standard); }
+.service-card:hover { translate: none; border-color: var(--color-brand-gold); border-top-color: var(--color-brand-gold); background: #fff; box-shadow: none; }
+.service-card__icon { width: 3.25rem; height: 3.25rem; border: 1px solid var(--color-border-strong); border-radius: 0; background: transparent; color: var(--color-brand-black); }
+.service-card__number { color: var(--color-brand-olive); font-size: var(--text-lg); }
+
+.accordion { border-top-color: var(--color-border-strong); }
+.accordion__item { border-bottom: 1px solid var(--color-border); }
+.accordion__item h3 { font-family: var(--font-body); }
+.accordion__item button { width: 100%; min-height: 4.5rem; display: flex; align-items: center; justify-content: space-between; gap: var(--space-5); padding: var(--space-5) 0; border: 0; background: transparent; color: var(--color-brand-black); text-align: left; font-weight: 750; cursor: pointer; }
+.accordion__item button svg { width: 1.25rem; height: 1.25rem; flex: 0 0 auto; transition: rotate var(--duration-default) var(--easing-standard); }
+.accordion__item.is-open button svg { rotate: 180deg; }
+.accordion__panel { padding-bottom: var(--space-6); }
+.notice-card, .safety-notice { border-left-width: 3px; background: #f5efe3; }
+
+.contact-section { border-top: 4px solid var(--color-brand-gold); background: linear-gradient(90deg, rgb(251 249 245 / 4%) 1px, transparent 1px) 0 0 / 8rem 100%, var(--color-brand-black); }
+.contact-card { border: 1px solid rgb(251 249 245 / 18%); border-radius: 0; box-shadow: var(--shadow-elevated); }
+.field label { font-size: 0.9rem; letter-spacing: 0.01em; }
+.field input, .field textarea, .field select { min-height: 3.25rem; border-radius: 0; border-color: var(--color-border-strong); background: #fff; transition: border-color var(--duration-fast), box-shadow var(--duration-fast); }
+.field input:hover, .field textarea:hover, .field select:hover { border-color: var(--color-brand-black); }
+.field input:focus, .field textarea:focus, .field select:focus { box-shadow: inset 3px 0 var(--color-brand-gold); }
+.form-summary { border-radius: 0; }
+
+.site-footer { padding-block: clamp(4.5rem, 7vw, 6.5rem) var(--space-6); border-top: 4px solid var(--color-brand-gold); }
+.footer-grid { gap: clamp(2.5rem, 5vw, 5rem); }
+.footer-grid h2 { font-family: var(--font-body); font-size: var(--text-xs); font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-brand-gold); }
+.footer-grid nav, .footer-grid address { gap: var(--space-3); }
+.footer-grid a { text-decoration-color: transparent; }
+.footer-grid a:hover { text-decoration-color: var(--color-brand-gold); }
+.footer-bottom { border-top-color: rgb(251 249 245 / 22%); }
+
+.hero-section, .service-hero { border-bottom: 1px solid rgb(26 26 26 / 16%); }
+.hero-section { background: linear-gradient(115deg, rgb(212 163 89 / 8%), transparent 32%), var(--color-brand-paper); }
+.hero-copy { max-width: 44rem; }
+.hero-copy h1 { max-width: 12ch; }
+.hero-paths { border-top-color: var(--color-border); }
+.hero-paths a { border-bottom: 1px solid var(--color-border-soft); }
+.hero-paths a:hover { text-decoration: none; border-bottom-color: var(--color-brand-gold); }
+.hero-info-card { border: 0; border-top: 3px solid var(--color-brand-gold); background: var(--color-brand-black); color: var(--color-brand-paper); box-shadow: var(--shadow-elevated); }
+.hero-info-card > span:first-child { color: var(--color-brand-gold); }
+.hero-info-card a { color: var(--color-brand-paper); }
+.segment-grid article, .value-grid article, .visit-grid article, .contact-details-grid article, .process-grid--light article, .process-grid--light li, .situation-grid article, .category-grid article, .sticky-contact-card { border-radius: 0; border-color: rgb(26 26 26 / 18%); box-shadow: none; }
+.map-placeholder { border-color: rgb(26 26 26 / 24%); background: linear-gradient(135deg, rgb(74 85 74 / 12%), transparent 60%), repeating-linear-gradient(45deg, #e9e5dc, #e9e5dc 1rem, #f2efe9 1rem, #f2efe9 2rem); }
+.store-contact-strip { border-top: 3px solid var(--color-brand-gold); }
+.anchor-nav { border-color: rgb(26 26 26 / 14%); }
+
+@media (min-width: 48rem) { :root { --section-space: clamp(5.75rem, 8vw, 7.5rem); } }
+@media (prefers-reduced-motion: reduce) { .accordion__item button svg { transition: none; } }
