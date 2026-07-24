@@ -1,0 +1,5 @@
+import { company } from "@/content/company";
+import { ButtonLink } from "@/components/ui/ButtonLink";
+import { MediaFrame } from "@/components/ui/MediaFrame";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+export function HomeStoreSection() { return <section className="section"><div className="container store-layout split-layout--media-first"><div className="feature-copy"><SectionHeader eyebrow="Myymälä" title="Myymälä Pietarinkadulla" lead="Valaisimet, varaosat, valonlähteet, johdot ja muut sähkötarvikkeet."/><div className="notice-card"><strong>Saatavuus ei ole reaaliaikainen</strong><p>Varmista tietyn tuotteen tai valaisimen saatavuus ennen käyntiä.</p></div><p><strong>{company.address.street}</strong><br/>{company.address.postalCode} {company.address.city}<br/>{company.openingHours.display}</p><ButtonLink href="/myymala" icon="arrow">Katso myymälän tiedot</ButtonLink></div><MediaFrame requirement="Ajantasainen myymälän sisäkuva ilman vanhoja yhteystietoja." ratio="4/3"/></div></section>; }

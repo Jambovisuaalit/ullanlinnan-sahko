@@ -1,0 +1,2 @@
+"use client";
+export default function ErrorPage({ reset }: { error: Error & { digest?: string }; reset: () => void }) { return <main id="main-content"><section className="service-hero service-hero--compact"><div className="container"><p className="eyebrow"><span aria-hidden="true" />Virhe</p><h1>Sivun lataaminen ei onnistunut</h1><p className="hero-lead">Yritä ladata näkymä uudelleen.</p><button className="button button--primary" type="button" onClick={reset}>Yritä uudelleen</button></div></section></main>; }

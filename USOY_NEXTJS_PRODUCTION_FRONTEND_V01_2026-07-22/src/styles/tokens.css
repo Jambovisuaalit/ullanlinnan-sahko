@@ -1,0 +1,101 @@
+:root {
+  color-scheme: light;
+  --color-brand-black: #1a1a1a;
+  --color-brand-paper: #fbf9f5;
+  --color-brand-gold: #d4a359;
+  --color-brand-olive: #4a554a;
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #525251;
+  --color-text-muted: #696867;
+  --color-text-inverse: #fbf9f5;
+  --color-bg-primary: #fbf9f5;
+  --color-bg-secondary: #f2efe9;
+  --color-surface: #ffffff;
+  --color-surface-warm: #f7f3eb;
+  --color-border: #b7b3ab;
+  --color-border-soft: #ddd8cf;
+  --color-border-strong: #525251;
+  --color-focus: #9a681c;
+  --color-success: #2f6b43;
+  --color-warning: #8a5a00;
+  --color-error: #a12d2d;
+  --color-info: #255e7a;
+  --color-interactive-hover: #343434;
+  --color-warning-soft: #fff8e9;
+  --color-error-soft: #fff1f1;
+  --color-success-soft: #eff9f1;
+  --color-overlay: rgb(26 26 26 / 55%);
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-28: 7rem;
+  --space-32: 8rem;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 18px;
+  --radius-pill: 999px;
+  --shadow-subtle: 0 1px 2px rgb(26 26 26 / 6%);
+  --shadow-default: 0 12px 32px rgb(26 26 26 / 9%);
+  --shadow-elevated: 0 24px 64px rgb(26 26 26 / 14%);
+  --container-main-max: 80rem;
+  --container-text-max: 45rem;
+  --container-form-max: 40rem;
+  --container-media-max: 90rem;
+  --container-reading-narrow: 35rem;
+  --page-margin: 1rem;
+  --grid-columns: 4;
+  --grid-gutter: 1rem;
+  --section-space: 4rem;
+  --card-padding: 1.25rem;
+  --header-main-height: 4rem;
+  --header-notice-height: 2rem;
+  --mobile-action-height: 4rem;
+  --font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-heading: "Libre Baskerville", Georgia, serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: clamp(1.0625rem, 1rem + 0.25vw, 1.25rem);
+  --text-h3: clamp(1.35rem, 1.22rem + 0.55vw, 1.75rem);
+  --text-h2: clamp(2rem, 1.55rem + 1.8vw, 3.25rem);
+  --text-h1: clamp(2.5rem, 1.75rem + 3.2vw, 5.25rem);
+  --duration-fast: 140ms;
+  --duration-default: 200ms;
+  --easing-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+@media (min-width: 48rem) {
+  :root {
+    --page-margin: 2rem;
+    --grid-columns: 6;
+    --grid-gutter: 1.5rem;
+    --section-space: 5rem;
+    --card-padding: 1.5rem;
+    --header-main-height: 4.5rem;
+    --header-notice-height: 2.5rem;
+  }
+}
+@media (min-width: 64rem) {
+  :root { --page-margin: 2.5rem; --grid-columns: 8; }
+}
+@media (min-width: 80rem) {
+  :root {
+    --page-margin: 3rem;
+    --grid-columns: 12;
+    --grid-gutter: 2rem;
+    --section-space: 6rem;
+    --card-padding: 2rem;
+    --header-main-height: 5rem;
+  }
+}

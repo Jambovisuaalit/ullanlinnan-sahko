@@ -1,0 +1,38 @@
+{
+  "name": "usoy-nextjs-production-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "verify:assets": "node scripts/verify-assets.mjs",
+    "validate:content": "node scripts/validate-content.mjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --max-warnings=0",
+    "build": "npm run verify:environment && npm run verify:assets && npm run validate:content && npm run validate:frontend && next build",
+    "build:ci": "ALLOW_MISSING_BRAND_ASSETS=true npm run verify:assets && npm run validate:content && npm run validate:frontend && next build",
+    "check": "npm run validate:content && npm run validate:frontend && npm run typecheck && npm run lint",
+    "validate:frontend": "node scripts/validate-frontend.mjs",
+    "verify:environment": "node scripts/verify-environment.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.2.8",
+    "@fontsource/libre-baskerville": "^5.2.6",
+    "@hookform/resolvers": "^5.2.2",
+    "next": "16.2.11",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "react-hook-form": "^7.62.0",
+    "zod": "^4.1.5"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "eslint": "^9.34.0",
+    "eslint-config-next": "16.2.11",
+    "typescript": "^5.9.2"
+  }
+}

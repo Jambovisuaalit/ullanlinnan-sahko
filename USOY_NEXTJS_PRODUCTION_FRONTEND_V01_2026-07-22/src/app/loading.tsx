@@ -1,0 +1,1 @@
+export default function Loading() { return <main id="main-content" aria-busy="true"><section className="service-hero service-hero--compact"><div className="container"><p className="eyebrow"><span aria-hidden="true" />Ladataan</p><h1>Sivua ladataan</h1></div></section></main>; }

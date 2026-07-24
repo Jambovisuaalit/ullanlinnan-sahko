@@ -1,0 +1,9 @@
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { ContactForm } from "@/components/forms/ContactForm";
+import { company, contactLinks } from "@/content/company";
+import { Icon } from "@/components/ui/Icon";
+import { ButtonLink } from "@/components/ui/ButtonLink";
+export function ContactPage() {
+  return <main id="main-content"><Breadcrumbs items={[{ name: "Etusivu", href: "/" }, { name: "Yhteystiedot", href: "/yhteystiedot" }]}/><section className="service-hero service-hero--compact"><div className="container"><p className="eyebrow"><span aria-hidden="true"/>Yhteystiedot</p><h1>Ota yhteyttä Ullanlinnan Sähköön</h1><p className="hero-lead">Kerro sähkötyöstä, valaisimesta, myymälätuotteesta tai taloyhtiön tai yrityksen tarpeesta.</p></div></section><section className="section"><div className="container contact-details-grid"><article><Icon name="phone"/><span>Puhelin</span><a href={contactLinks.phone}>{company.phoneDisplay}</a></article><article><Icon name="mail"/><span>Sähköposti</span><a href={contactLinks.email}>{company.email}</a></article><article><Icon name="pin"/><span>Myymälä</span><address>{company.address.street}<br/>{company.address.postalCode} {company.address.city}</address></article><article><Icon name="clock"/><span>Aukiolo</span><strong>{company.openingHours.display}</strong></article></div><ButtonLink href={contactLinks.directions} external variant="secondary" icon="arrow">Avaa reittiohje</ButtonLink></section><section id="yhteydenotto" className="contact-section"><div className="container contact-layout"><div className="contact-copy"><SectionHeader eyebrow="Lomake" title="Kerro tarpeestasi"/><p>Anna yhteydenottoa varten tarvittavat tiedot. Älä lähetä tarpeettomia henkilötietoja.</p></div><div className="contact-card"><ContactForm /></div></div></section></main>;
+}

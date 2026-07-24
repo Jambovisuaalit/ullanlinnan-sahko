@@ -1,0 +1,5 @@
+import { ImageResponse } from "next/og";
+export const alt = "Ullanlinnan Sähkö Oy – sähkö- ja valaisinpalvelut Helsingissä";
+export const size = { width: 1200, height: 630 };
+export const contentType = "image/png";
+export default function Image() { return new ImageResponse(<div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: 72, background: "#FBF9F5", color: "#1A1A1A", fontFamily: "serif" }}><div style={{ fontFamily: "sans-serif", fontSize: 26, letterSpacing: 5, textTransform: "uppercase" }}>Ullanlinnan Sähkö Oy</div><div style={{ display: "flex", flexDirection: "column", gap: 24 }}><div style={{ width: 96, height: 5, background: "#D4A359" }} /><div style={{ maxWidth: 930, fontSize: 74, lineHeight: 1.08 }}>Apua sähköihin, valaistukseen ja valaisimiin</div></div><div style={{ display: "flex", justifyContent: "space-between", fontFamily: "sans-serif", fontSize: 25 }}><span>Pietarinkatu 21 · Helsinki</span><span>040 574 3094</span></div></div>, size); }

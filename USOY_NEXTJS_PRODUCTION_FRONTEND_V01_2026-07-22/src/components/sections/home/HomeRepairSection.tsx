@@ -1,0 +1,5 @@
+import { ButtonLink } from "@/components/ui/ButtonLink";
+import { Icon } from "@/components/ui/Icon";
+import { MediaFrame } from "@/components/ui/MediaFrame";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+export function HomeRepairSection() { return <section className="section section--olive"><div className="container split-layout"><div className="feature-copy"><SectionHeader eyebrow="Valaisimien korjaus" title="Kannattaako valaisin korjata?"/><p>Kaikkia valaisimia ei voida korjata. Alustavaa arviota varten tarvitaan kuva valaisimesta, viasta ja näkyvistä merkinnöistä.</p><ul className="check-list"><li><Icon name="check"/>Rakenne ja sähköosien kunto</li><li><Icon name="check"/>Varaosien saatavuus ja yhteensopivuus</li><li><Icon name="check"/>Turvallinen ja tarkoituksenmukainen toteutus</li></ul><ButtonLink href="/valaisimien-korjaus" variant="inverse" icon="arrow">Kysy korjauksesta</ButtonLink></div><MediaFrame tone="dark" requirement="Aito valaisin korjauspisteellä." ratio="4/3"/></div></section>; }

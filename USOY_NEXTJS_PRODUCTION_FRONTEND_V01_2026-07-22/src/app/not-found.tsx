@@ -1,0 +1,2 @@
+import { ButtonLink } from "@/components/ui/ButtonLink";
+export default function NotFound() { return <main id="main-content"><section className="service-hero service-hero--compact"><div className="container"><p className="eyebrow"><span aria-hidden="true" />404</p><h1>Sivua ei löytynyt</h1><p className="hero-lead">Osoite voi olla vanhentunut tai kirjoitettu väärin.</p><div className="button-row"><ButtonLink href="/">Etusivulle</ButtonLink><ButtonLink href="/yhteystiedot" variant="secondary">Yhteystiedot</ButtonLink></div></div></section></main>; }
