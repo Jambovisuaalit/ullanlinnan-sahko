@@ -24,13 +24,15 @@ export function SiteNavigation() {
   useEffect(() => { setDropdownOpen(false); setDrawerOpen(false); }, [pathname]);
   useEffect(() => {
     if (!drawerOpen) return;
-    const root = drawerRef.current; if (!root) return;
+    const currentRoot = drawerRef.current;
+    if (!currentRoot) return;
+    const drawerRoot: HTMLDivElement = currentRoot;
     document.documentElement.classList.add("nav-open"); document.body.classList.add("nav-open"); document.body.dataset.scrollLock = "true";
-    (root.querySelector("button") as HTMLElement | null)?.focus();
+    (drawerRoot.querySelector("button") as HTMLElement | null)?.focus();
     function onKey(event: KeyboardEvent) {
       if (event.key === "Escape") { setDrawerOpen(false); triggerRef.current?.focus(); return; }
       if (event.key !== "Tab") return;
-      const focusable = Array.from(root.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'));
+      const focusable = Array.from(drawerRoot.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'));
       if (!focusable.length) return;
       const first = focusable[0]; const last = focusable[focusable.length - 1];
       if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
