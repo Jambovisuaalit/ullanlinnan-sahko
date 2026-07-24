@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: USOY_NEXTJS_PRODUCTION_FRONTEND_V01_2026-07-22
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm install --no-fund --no-audit
+      - name: Validate and typecheck
+        run: npm run check
+      - name: Build preview
+        run: npm run build:ci
+        env:
+          NEXT_PUBLIC_SITE_URL: https://preview.invalid
+          CONTACT_FORM_WEBHOOK_URL: https://preview.invalid/contact
