@@ -1,0 +1,9 @@
+{
+  "name": "ullanlinnan-sahko-deploy-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix USOY_NEXTJS_PRODUCTION_FRONTEND_V01_2026-07-22 run build:ci",
+    "check": "npm --prefix USOY_NEXTJS_PRODUCTION_FRONTEND_V01_2026-07-22 run check"
+  }
+}
