@@ -10,7 +10,6 @@ const required = [
   "public/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_ICO_MULTI.ico",
   "public/brand/USOY_LOGO_APPLE_TOUCH_BLACK_ON_PAPER_PNG_180X180.png",
   "public/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_PNG_192X192.png",
-  "public/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_PNG_512X512.png",
 ];
 
 const approvedSha256 = new Map([
@@ -20,7 +19,6 @@ const approvedSha256 = new Map([
   ["public/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_ICO_MULTI.ico", "8c9eb4ee4be8eaa45075c8aba6503871cca05c69d56d954ba75628e66f862423"],
   ["public/brand/USOY_LOGO_APPLE_TOUCH_BLACK_ON_PAPER_PNG_180X180.png", "50d397ca617f34ac4c232f757c69ecf7a6277d5fcffddec10f6df253a0b822c4"],
   ["public/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_PNG_192X192.png", "0e767b9875690feb02b3f5a4fa41ee3624a990e3db4d980879ed4a53d19f4221"],
-  ["public/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_PNG_512X512.png", "de45f05ad7f5c1e1dab1628de33ad36d3d895bc4ace8684f7806e885014dfa37"],
 ]);
 
 const missing = [];
