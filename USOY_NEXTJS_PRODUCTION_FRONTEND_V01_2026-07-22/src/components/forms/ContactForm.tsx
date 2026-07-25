@@ -1,6 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { contactSchema, type ContactFields, type ContactFormInput, validateFiles } from "@/lib/contact-schema";
 
@@ -13,18 +13,26 @@ const labels: Record<ContactFields["topic"], string> = {
 };
 
 export function ContactForm({ defaultTopic }: { defaultTopic?: ContactFields["topic"] }) {
-  const startedAt = useMemo(() => Date.now(), []);
+  const [formCycle, setFormCycle] = useState(0);
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [generalError, setGeneralError] = useState("");
   const [fileError, setFileError] = useState("");
-  const summaryRef = useRef<HTMLDivElement>(null);
-  const { control, register, handleSubmit, reset, formState: { errors } } = useForm<ContactFormInput, unknown, ContactFields>({
+  const { control, register, handleSubmit, reset, setValue, formState: { errors } } = useForm<ContactFormInput, unknown, ContactFields>({
     resolver: zodResolver(contactSchema),
-    defaultValues: { topic: defaultTopic, phone: "", address: "", website: "", startedAt, consent: false },
+    defaultValues: { topic: defaultTopic, phone: "", address: "", website: "", startedAt: 1, consent: false },
     mode: "onBlur"
   });
+
+  useEffect(() => {
+    setValue("startedAt", Date.now(), { shouldValidate: false });
+  }, [formCycle, setValue]);
+
   const topic = useWatch({ control, name: "topic" });
   const showAddress = topic === "electrical" || topic === "business";
+
+  function focusSummary() {
+    requestAnimationFrame(() => document.getElementById("contact-form-summary")?.focus());
+  }
 
   async function submit(values: ContactFields, event?: React.BaseSyntheticEvent) {
     if (status === "submitting") return;
@@ -32,7 +40,7 @@ export function ContactForm({ defaultTopic }: { defaultTopic?: ContactFields["to
     const form = event?.target as HTMLFormElement | undefined;
     const files = form ? Array.from((form.elements.namedItem("attachments") as HTMLInputElement)?.files ?? []) : [];
     const validation = validateFiles(files);
-    if (validation) { setFileError(validation); setStatus("error"); requestAnimationFrame(() => summaryRef.current?.focus()); return; }
+    if (validation) { setFileError(validation); setStatus("error"); focusSummary(); return; }
     const body = new FormData();
     Object.entries(values).forEach(([key, value]) => body.append(key, String(value)));
     files.forEach((file) => body.append("attachments", file));
@@ -40,17 +48,18 @@ export function ContactForm({ defaultTopic }: { defaultTopic?: ContactFields["to
       const response = await fetch("/api/contact", { method: "POST", body });
       if (!response.ok) throw new Error("submission_failed");
       setStatus("success");
-      reset({ topic: defaultTopic, phone: "", address: "", website: "", startedAt: Date.now(), consent: false, name: "", email: "", message: "" });
+      reset({ topic: defaultTopic, phone: "", address: "", website: "", startedAt: 1, consent: false, name: "", email: "", message: "" });
+      setFormCycle((cycle) => cycle + 1);
     } catch {
       setStatus("error");
       setGeneralError("Lomakkeen lähetys ei onnistunut. Yritä uudelleen tai ota yhteyttä puhelimitse.");
-      requestAnimationFrame(() => summaryRef.current?.focus());
+      focusSummary();
     }
   }
 
   const hasErrors = Object.keys(errors).length > 0 || Boolean(fileError) || Boolean(generalError);
-  return <form className="contact-form" noValidate onSubmit={handleSubmit(submit, () => requestAnimationFrame(() => summaryRef.current?.focus()))}>
-    {hasErrors ? <div ref={summaryRef} className="form-summary form-summary--error" role="alert" tabIndex={-1}><strong>Tarkista lomakkeen tiedot.</strong>{generalError ? <p>{generalError}</p> : null}<ul>{Object.entries(errors).map(([key, value]) => <li key={key}><a href={`#contact-${key}`}>{value?.message}</a></li>)}{fileError ? <li><a href="#contact-attachments">{fileError}</a></li> : null}</ul></div> : null}
+  return <form className="contact-form" noValidate onSubmit={handleSubmit(submit, focusSummary)}>
+    {hasErrors ? <div id="contact-form-summary" className="form-summary form-summary--error" role="alert" tabIndex={-1}><strong>Tarkista lomakkeen tiedot.</strong>{generalError ? <p>{generalError}</p> : null}<ul>{Object.entries(errors).map(([key, value]) => <li key={key}><a href={`#contact-${key}`}>{value?.message}</a></li>)}{fileError ? <li><a href="#contact-attachments">{fileError}</a></li> : null}</ul></div> : null}
     {status === "success" ? <div className="form-summary form-summary--success" role="status"><strong>Yhteydenotto lähetettiin.</strong><p>Kiitos. Palaamme asiaan annettujen tietojen perusteella.</p></div> : null}
     <div className="form-grid">
       <Field label="Aihe" id="contact-topic" error={errors.topic?.message}><select id="contact-topic" aria-invalid={Boolean(errors.topic)} aria-describedby={errors.topic ? "contact-topic-error" : undefined} {...register("topic")}><option value="">Valitse aihe</option>{Object.entries(labels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></Field>
