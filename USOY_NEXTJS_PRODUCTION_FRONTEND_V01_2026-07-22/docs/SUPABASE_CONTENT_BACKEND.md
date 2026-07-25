@@ -51,6 +51,14 @@ Projektissa ei rakenneta vapaata page builderia, verkkokauppaa tai reaaliaikaist
    - triggerifunktioiden suoran kutsuoikeuden poisto
    - vain RLS:ssä tarvittavien roolifunktioiden käyttöoikeudet
 
+3. `202607250003_enforce_approval_integrity.sql`
+   - hyväksytyn ja julkaistun sisällön hiljaisen jälkimuokkauksen esto
+   - hyväksynnän nollaus, kun sisältö avataan uudelleen muokattavaksi
+   - julkaistun sisällön avaaminen vain publisher- tai admin-roolilla
+   - second hand -valaisimelle vähintään yksi julkaistu kuva
+   - täsmälleen yksi julkaistu pääkuva
+   - eksplisiittiset tauluoikeudet anon- ja authenticated-rooleille
+
 ## Tietokantataulut
 
 ### `opening_hour_exceptions`
@@ -94,6 +102,10 @@ Julkaiseminen vaatii:
 - ei `VAHVISTETTAVA`, `TBD`, `TODO` tai `PLACEHOLDER` -merkintöjä
 - kuville vahvistetut käyttöoikeudet
 - informatiivisille kuville alt-tekstin
+- second hand -valaisimelle vähintään yhden julkaistun kuvan
+- second hand -valaisimelle täsmälleen yhden julkaistun pääkuvan
+
+Hyväksyttyä tai julkaistua sisältöä ei voi muuttaa säilyttäen vanhaa hyväksyntää. Sisältö on avattava takaisin `in_review`- tai `draft`-tilaan, jolloin hyväksyntätiedot poistetaan automaattisesti.
 
 ## Admin-roolit
 
