@@ -1,7 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { contactSchema, type ContactFields, type ContactFormInput, validateFiles } from "@/lib/contact-schema";
 
 const labels: Record<ContactFields["topic"], string> = {
@@ -18,12 +18,12 @@ export function ContactForm({ defaultTopic }: { defaultTopic?: ContactFields["to
   const [generalError, setGeneralError] = useState("");
   const [fileError, setFileError] = useState("");
   const summaryRef = useRef<HTMLDivElement>(null);
-  const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<ContactFormInput, unknown, ContactFields>({
+  const { control, register, handleSubmit, reset, formState: { errors } } = useForm<ContactFormInput, unknown, ContactFields>({
     resolver: zodResolver(contactSchema),
     defaultValues: { topic: defaultTopic, phone: "", address: "", website: "", startedAt, consent: false },
     mode: "onBlur"
   });
-  const topic = watch("topic");
+  const topic = useWatch({ control, name: "topic" });
   const showAddress = topic === "electrical" || topic === "business";
 
   async function submit(values: ContactFields, event?: React.BaseSyntheticEvent) {
