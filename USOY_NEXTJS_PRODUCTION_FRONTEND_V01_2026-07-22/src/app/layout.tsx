@@ -18,8 +18,7 @@ export const metadata: Metadata = {
     icon: [
       { url: "/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_RGB_SVG.svg", type: "image/svg+xml" },
       { url: "/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_ICO_MULTI.ico" }
-    ],
-    apple: [{ url: "/brand/USOY_LOGO_APPLE_TOUCH_BLACK_ON_PAPER_PNG_180X180.png", sizes: "180x180", type: "image/png" }]
+    ]
   }
 };
 export const viewport: Viewport = {
