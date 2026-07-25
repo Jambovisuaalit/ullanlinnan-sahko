@@ -6,15 +6,14 @@
     "node": "22.x"
   },
   "scripts": {
-    "dev": "npm run materialize:brand-assets && next dev",
-    "materialize:brand-assets": "node scripts/materialize-brand-assets.mjs",
+    "dev": "next dev",
     "verify:assets": "node scripts/verify-assets.mjs",
     "validate:content": "node scripts/validate-content.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --max-warnings=0",
-    "build": "npm run materialize:brand-assets && npm run verify:environment && npm run verify:assets && npm run validate:content && npm run validate:frontend && next build",
-    "build:ci": "npm run materialize:brand-assets && npm run verify:assets && npm run validate:content && npm run validate:frontend && next build",
-    "check": "npm run materialize:brand-assets && npm run verify:assets && npm run validate:content && npm run validate:frontend && npm run typecheck && npm run lint",
+    "build": "npm run verify:environment && npm run verify:assets && npm run validate:content && npm run validate:frontend && next build",
+    "build:ci": "npm run verify:assets && npm run validate:content && npm run validate:frontend && next build",
+    "check": "npm run verify:assets && npm run validate:content && npm run validate:frontend && npm run typecheck && npm run lint",
     "validate:frontend": "node scripts/validate-frontend.mjs",
     "verify:environment": "node scripts/verify-environment.mjs"
   },
