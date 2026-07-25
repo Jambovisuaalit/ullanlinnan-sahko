@@ -8,8 +8,6 @@ const required = [
   "public/brand/USOY_LOGO_HEADER_COMPACT_PAPER_RGB_SVG.svg",
   "public/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_RGB_SVG.svg",
   "public/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_ICO_MULTI.ico",
-  "public/brand/USOY_LOGO_APPLE_TOUCH_BLACK_ON_PAPER_PNG_180X180.png",
-  "public/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_PNG_192X192.png",
 ];
 
 const approvedSha256 = new Map([
@@ -17,8 +15,6 @@ const approvedSha256 = new Map([
   ["public/brand/USOY_LOGO_HEADER_COMPACT_PAPER_RGB_SVG.svg", "a782f5ce8ac77c4f6a8974f23e9d830590e9fd2c2b60203d7e45b8fa0be3bf34"],
   ["public/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_RGB_SVG.svg", "a5ca94e85acf31302a2c65b0ef56b80bb9126664f0a6b127a05991f1a7920990"],
   ["public/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_ICO_MULTI.ico", "8c9eb4ee4be8eaa45075c8aba6503871cca05c69d56d954ba75628e66f862423"],
-  ["public/brand/USOY_LOGO_APPLE_TOUCH_BLACK_ON_PAPER_PNG_180X180.png", "50d397ca617f34ac4c232f757c69ecf7a6277d5fcffddec10f6df253a0b822c4"],
-  ["public/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_PNG_192X192.png", "0e767b9875690feb02b3f5a4fa41ee3624a990e3db4d980879ed4a53d19f4221"],
 ]);
 
 const missing = [];
