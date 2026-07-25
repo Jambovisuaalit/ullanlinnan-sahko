@@ -14,7 +14,7 @@ export class ContentPublicationError extends Error {
 }
 
 function findForbiddenMarkers(value: unknown): string[] {
-  const serialized = JSON.stringify(value).toUpperCase();
+  const serialized = JSON.stringify(value ?? null).toUpperCase();
 
   return forbiddenPublicationMarkers.filter((marker) =>
     serialized.includes(marker),
