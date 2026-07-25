@@ -15,36 +15,83 @@ export const forbiddenPublicationMarkers = [
   "PLACEHOLDER",
 ] as const;
 
-const optionalDateTimeSchema = z.iso.datetime().nullable().optional();
-const nullableUuidSchema = z.uuid().nullable().optional();
+const uuidSchema = z.string().uuid();
+const dateTimeSchema = z.string().datetime({ offset: true });
+const optionalDateTimeSchema = dateTimeSchema.nullable().optional();
+const nullableUuidSchema = uuidSchema.nullable().optional();
+const timeSchema = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/);
 
-export const publicationSchema = z.object({
-  status: publicationStatusSchema.default("draft"),
-  unresolvedFields: z.array(z.string().trim().min(1)).default([]),
-  publishAt: optionalDateTimeSchema,
-  unpublishAt: optionalDateTimeSchema,
-  approvedAt: optionalDateTimeSchema,
-  approvedBy: nullableUuidSchema,
-  publishedAt: optionalDateTimeSchema,
-  publishedBy: nullableUuidSchema,
-});
+const internalOrAbsoluteUrlSchema = z
+  .string()
+  .trim()
+  .min(1)
+  .max(2048)
+  .refine(
+    (value) => value.startsWith("/") || URL.canParse(value),
+    "Anna sisäinen polku tai täydellinen URL.",
+  );
 
-export const mediaReferenceSchema = z.object({
-  id: z.uuid(),
-  storagePath: z.string().trim().min(1).max(500),
-  altText: z.string().max(240),
-  decorative: z.boolean(),
-  width: z.number().int().positive(),
-  height: z.number().int().positive(),
-});
+export const publicationSchema = z
+  .object({
+    status: publicationStatusSchema.default("draft"),
+    unresolvedFields: z.array(z.string().trim().min(1)).default([]),
+    publishAt: optionalDateTimeSchema,
+    unpublishAt: optionalDateTimeSchema,
+    approvedAt: optionalDateTimeSchema,
+    approvedBy: nullableUuidSchema,
+    publishedAt: optionalDateTimeSchema,
+    publishedBy: nullableUuidSchema,
+  })
+  .superRefine((value, context) => {
+    if (
+      value.publishAt &&
+      value.unpublishAt &&
+      new Date(value.unpublishAt) <= new Date(value.publishAt)
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: ["unpublishAt"],
+        message: "Poistumisajan on oltava julkaisuajan jälkeen.",
+      });
+    }
+  });
+
+export const mediaReferenceSchema = z
+  .object({
+    id: uuidSchema,
+    storagePath: z.string().trim().min(1).max(500),
+    altText: z.string().max(240),
+    decorative: z.boolean(),
+    width: z.number().int().positive(),
+    height: z.number().int().positive(),
+    sortOrder: z.number().int().min(0).default(0),
+    isPrimary: z.boolean().default(false),
+  })
+  .superRefine((value, context) => {
+    if (value.decorative && value.altText !== "") {
+      context.addIssue({
+        code: "custom",
+        path: ["altText"],
+        message: "Koristekuvan alt-tekstin tulee olla tyhjä.",
+      });
+    }
+
+    if (!value.decorative && value.altText.trim().length < 2) {
+      context.addIssue({
+        code: "custom",
+        path: ["altText"],
+        message: "Informatiivinen kuva tarvitsee alt-tekstin.",
+      });
+    }
+  });
 
 export const openingHourExceptionSchema = z
   .object({
-    id: z.uuid().optional(),
-    exceptionDate: z.iso.date(),
+    id: uuidSchema.optional(),
+    exceptionDate: z.string().date(),
     isClosed: z.boolean(),
-    opensAt: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/).nullable(),
-    closesAt: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/).nullable(),
+    opensAt: timeSchema.nullable(),
+    closesAt: timeSchema.nullable(),
     publicLabel: z.string().trim().min(2).max(160),
     publication: publicationSchema,
   })
@@ -64,18 +111,31 @@ export const openingHourExceptionSchema = z
         message: "Avoimelle päivälle vaaditaan avaus- ja sulkemisaika.",
       });
     }
+
+    if (
+      !value.isClosed &&
+      value.opensAt &&
+      value.closesAt &&
+      value.opensAt >= value.closesAt
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: ["closesAt"],
+        message: "Sulkemisajan on oltava avaamisajan jälkeen.",
+      });
+    }
   });
 
 export const announcementSchema = z
   .object({
-    id: z.uuid().optional(),
+    id: uuidSchema.optional(),
     title: z.string().trim().min(2).max(120),
     message: z.string().trim().min(2).max(500),
     level: z.enum(["information", "warning"]).default("information"),
-    startsAt: z.iso.datetime(),
-    endsAt: z.iso.datetime().nullable().optional(),
+    startsAt: dateTimeSchema,
+    endsAt: dateTimeSchema.nullable().optional(),
     linkLabel: z.string().trim().min(2).max(80).nullable().optional(),
-    linkUrl: z.string().trim().url().nullable().optional(),
+    linkUrl: internalOrAbsoluteUrlSchema.nullable().optional(),
     publication: publicationSchema,
   })
   .superRefine((value, context) => {
@@ -89,11 +149,22 @@ export const announcementSchema = z
         message: "Linkin teksti ja URL on annettava yhdessä.",
       });
     }
+
+    if (
+      value.endsAt &&
+      new Date(value.endsAt) <= new Date(value.startsAt)
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: ["endsAt"],
+        message: "Ilmoituksen päättymisajan on oltava alkamisajan jälkeen.",
+      });
+    }
   });
 
 export const mediaAssetSchema = z
   .object({
-    id: z.uuid().optional(),
+    id: uuidSchema.optional(),
     storagePath: z.string().trim().min(1).max(500),
     originalFilename: z.string().trim().min(1).max(255),
     mimeType: z.enum(["image/jpeg", "image/png", "image/webp", "image/avif"]),
@@ -129,33 +200,66 @@ export const mediaAssetSchema = z
         message: "Informatiivinen kuva tarvitsee alt-tekstin.",
       });
     }
+
+    if (
+      ["approved", "published"].includes(value.publication.status) &&
+      !value.rightsConfirmed
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: ["rightsConfirmed"],
+        message: "Kuvan käyttöoikeus on vahvistettava ennen hyväksyntää.",
+      });
+    }
   });
 
-export const secondHandItemSchema = z.object({
-  id: z.uuid().optional(),
-  slug: z
-    .string()
-    .trim()
-    .min(2)
-    .max(120)
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-  title: z.string().trim().min(2).max(120),
-  description: z.string().trim().min(10).max(2000),
-  dimensions: z.string().trim().max(240).nullable().optional(),
-  materials: z.array(z.string().trim().min(1).max(80)).default([]),
-  conditionNotes: z.string().trim().min(2).max(1000),
-  internalState: z.enum(["active", "sold", "archived"]).default("active"),
-  availabilityNotice: z
-    .string()
-    .trim()
-    .min(2)
-    .max(160)
-    .default("Saatavuus varmistettava."),
-  seoTitle: z.string().trim().min(20).max(70).nullable().optional(),
-  seoDescription: z.string().trim().min(60).max(180).nullable().optional(),
-  media: z.array(mediaReferenceSchema).default([]),
-  publication: publicationSchema,
-});
+export const secondHandItemSchema = z
+  .object({
+    id: uuidSchema.optional(),
+    slug: z
+      .string()
+      .trim()
+      .min(2)
+      .max(120)
+      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+    title: z.string().trim().min(2).max(120),
+    description: z.string().trim().min(10).max(2000),
+    dimensions: z.string().trim().max(240).nullable().optional(),
+    materials: z.array(z.string().trim().min(1).max(80)).default([]),
+    conditionNotes: z.string().trim().min(2).max(1000),
+    internalState: z.enum(["active", "sold", "archived"]).default("active"),
+    availabilityNotice: z
+      .string()
+      .trim()
+      .min(2)
+      .max(160)
+      .default("Saatavuus varmistettava."),
+    seoTitle: z.string().trim().min(20).max(70).nullable().optional(),
+    seoDescription: z.string().trim().min(60).max(180).nullable().optional(),
+    media: z.array(mediaReferenceSchema).default([]),
+    publication: publicationSchema,
+  })
+  .superRefine((value, context) => {
+    if (["approved", "published"].includes(value.publication.status)) {
+      const primaryImages = value.media.filter((image) => image.isPrimary);
+
+      if (primaryImages.length !== 1) {
+        context.addIssue({
+          code: "custom",
+          path: ["media"],
+          message: "Hyväksyttävällä valaisimella on oltava täsmälleen yksi pääkuva.",
+        });
+      }
+
+      if (value.media.length === 0) {
+        context.addIssue({
+          code: "custom",
+          path: ["media"],
+          message: "Hyväksyttävällä valaisimella on oltava vähintään yksi kuva.",
+        });
+      }
+    }
+  });
 
 export type PublicationStatus = z.infer<typeof publicationStatusSchema>;
 export type Publication = z.infer<typeof publicationSchema>;
